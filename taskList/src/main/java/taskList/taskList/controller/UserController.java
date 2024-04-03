@@ -1,10 +1,12 @@
 package taskList.taskList.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskList.taskList.models.User;
 import taskList.taskList.service.UserService;
+import taskList.taskList.service.UserServiceImpl;
 
 import java.util.List;
 
@@ -25,9 +27,19 @@ public class UserController {
         return userService.save(user);
     }
 
-    @GetMapping("{username}")
+    @GetMapping("/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
+        return userService.update(id, user);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
+        return userService.delete(id);
     }
 }

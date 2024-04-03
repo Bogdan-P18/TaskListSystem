@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import taskList.taskList.models.ResourceNotFoundException;
 import taskList.taskList.models.User;
 import taskList.taskList.repository.UserRepository;
 
@@ -13,6 +14,7 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
     @Override
     public User save(User user) {
         return userRepository.save(user);
@@ -25,16 +27,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity<User> update(Long id, User user) {
-        return null;
+        User found = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " doesn't exist!"));
+        found.setUsername(user.getUsername());
+        found.setEmail(user.getEmail());
+        found.setPassword(user.getPassword());
+        return ResponseEntity.ok(found);
     }
 
     @Override
     public ResponseEntity<HttpStatus> delete(Long id) {
-        return null;
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " doesn't exist!"));
+        userRepository.delete(user);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+       return userRepository.findByUsername(username);
     }
 }
