@@ -9,7 +9,7 @@ import java.util.List;
 public interface UserService {
     User save(User user);
     List<User> getAll();
-    ResponseEntity<User> update(Long id, User user);
-    ResponseEntity<HttpStatus> delete(Long id);
+    User update(Long id, User user);
+    HttpStatus delete(Long id);
     User findByUsername(String username);
 }

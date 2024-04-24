@@ -2,7 +2,6 @@ package taskList.taskList.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import taskList.taskList.models.ResourceNotFoundException;
 import taskList.taskList.models.User;
@@ -26,21 +25,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public ResponseEntity<User> update(Long id, User user) {
+    public User update(Long id, User user) {
         User found = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " doesn't exist!"));
         found.setUsername(user.getUsername());
         found.setEmail(user.getEmail());
         found.setPassword(user.getPassword());
-        return ResponseEntity.ok(found);
+        userRepository.save(found);
+        return found;
     }
 
     @Override
-    public ResponseEntity<HttpStatus> delete(Long id) {
+    public HttpStatus delete(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " doesn't exist!"));
         userRepository.delete(user);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return HttpStatus.NO_CONTENT;
     }
 
     @Override

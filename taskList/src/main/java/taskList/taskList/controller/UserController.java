@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import taskList.taskList.models.User;
 import taskList.taskList.service.UserService;
-import taskList.taskList.service.UserServiceImpl;
 
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class UserController {
 
     @PostMapping
     public User createUser(@RequestBody User user) {
+        user.setId(0);
         return userService.save(user);
     }
 
@@ -35,11 +35,11 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
-        return userService.update(id, user);
+        return ResponseEntity.ok(userService.update(id, user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-        return userService.delete(id);
+        return ResponseEntity.ok(userService.delete(id));
     }
 }

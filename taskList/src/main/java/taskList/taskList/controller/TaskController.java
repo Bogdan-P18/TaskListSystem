@@ -28,16 +28,16 @@ public class TaskController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+        return ResponseEntity.ok(taskService.getTaskById(id));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Task> update(@PathVariable Long id, @RequestBody Task task) {
-        return taskService.update(id,task);
+        return ResponseEntity.ok(taskService.update(id,task));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable Long id) {
-        return taskService.delete(id);
+        return ResponseEntity.ok(taskService.delete(id));
     }
 }
